@@ -9,29 +9,30 @@ int cgiMain()
 
 	fprintf(cgiOut, "Content-type:text/html;charset=utf-8\n\n");
 
-	char Ino [20] = "\0";
-	char Cno[20] = "\0";
-	char grade[5] = "\0";
+	char Cno [4] = "\0";
+	char Cname[20] = "\0";
+	char Ccredit[5] = "\0";
+
 	int status = 0;
 
-	status = cgiFormString("Ino",  Ino, 20);
-	if (status != cgiFormSuccess)
-	{
-		fprintf(cgiOut, "get Ino error!\n");
-		return 1;
-	}
-
-	status = cgiFormString("Cno",  Cno, 20);
+	status = cgiFormString("Cno",  Cno, 4);
 	if (status != cgiFormSuccess)
 	{
 		fprintf(cgiOut, "get Cno error!\n");
 		return 1;
 	}
 
-	status = cgiFormString("grade",  grade, 5);
+	status = cgiFormString("Cname",  Cname, 20);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get grade error!\n");
+		fprintf(cgiOut, "get Cname error!\n");
+		return 1;
+	}
+
+	status = cgiFormString("Ccredit",  Ccredit, 5);
+	if (status != cgiFormSuccess)
+	{
+		fprintf(cgiOut, "get Ccredit error!\n");
 		return 1;
 	}
 
@@ -62,7 +63,7 @@ int cgiMain()
 	}
 
 
-	sprintf(sql, "insert  into score values('%s','%s', %d) ",Ino, Cno,  atoi(grade));
+	sprintf(sql, "update course set Cname='%s',Ccredit=%d where Cno='%s' ",Cname, atoi(Ccredit),Cno);
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));

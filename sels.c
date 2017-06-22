@@ -20,27 +20,36 @@ int cgiMain()
 		    <link rel=\"stylesheet\" href=\"/stu/public/css/bootstrap.min.css\">\
 		</head>");
 
-	char Cname[20] = "\0";
+	char Ino[20] = "\0";
+  char Cno[20] = "\0";
 	int status = 0;
 
-	status = cgiFormString("Cname",  Cname, 20);
+	status = cgiFormString("Ino",  Ino, 20);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get Cname error!\n");
+		fprintf(cgiOut, "get Ino error!\n");
 		return 1;
 	}
+
+  status = cgiFormString("Cno", Cno, 20);
+	if (status != cgiFormSuccess)
+	{
+		fprintf(cgiOut, "get Cno error!\n");
+		return 1;
+	}
+
 
 	int ret;
 	MYSQL *db;
 	char sql[128] = "\0";
 
-	if (Cname[0] == '*')
+	if (Ino[0] == '*' || Cno[0] == '*')
 	{
-		sprintf(sql, "select * from information");
+		sprintf(sql, "select * from score");
 	}
 	else
 	{
-		sprintf(sql, "select * from information where Cname = '%s'", Cname);
+		sprintf(sql, "select * from score where Ino='%s' and Cno='%s'",Ino , Cno);
 	}
 
 

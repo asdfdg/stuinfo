@@ -9,56 +9,35 @@ int cgiMain()
 
 fprintf(cgiOut, "Content-type:text/html;charset=utf-8\n\n");
 
-  char Ino [20] = "\0";
-	char Iname[20] = "\0";
-	char Isex[8] = "\0";
-	char Iage[16] = "\0";
-	char Iphone[16] = "\0";
-  char Sdept[16] = "\0";
+  char Cno [4] = "\0";
+	char Cname[20] = "\0";
+	char Ccredit[5] = "\0";
+
 	int status = 0;
 
-	status = cgiFormString("Ino", Ino , 20);
+	status = cgiFormString("Cno", Cno , 20);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get Ino error!\n");
+		fprintf(cgiOut, "get Cno error!\n");
 		return 1;
 	}
 
 
-	status = cgiFormString("Iname",  Iname, 20);
+	status = cgiFormString("Cname",  Cname, 20);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get Iname error!\n");
+		fprintf(cgiOut, "get Cname error!\n");
 		return 1;
 	}
 
-	status = cgiFormString("Isex",  Isex, 8);
+	status = cgiFormString("Ccredit",  Ccredit, 8);
 	if (status != cgiFormSuccess)
 	{
-		fprintf(cgiOut, "get Isex error!\n");
+		fprintf(cgiOut, "get Ccredit error!\n");
 		return 1;
 	}
 
-	status = cgiFormString("Iage",  Iage, 16);
-	if (status != cgiFormSuccess)
-	{
-		fprintf(cgiOut, "get Iage error!\n");
-		return 1;
-	}
 
-	status = cgiFormString("Iphone",  Iphone, 16);
-	if (status != cgiFormSuccess)
-	{
-		fprintf(cgiOut, "get Iphone error!\n");
-		return 1;
-	}
-
-	status = cgiFormString("Sdept",  Sdept, 16);
-	if (status != cgiFormSuccess)
-	{
-		fprintf(cgiOut, "get Sdept error!\n");
-		return 1;
-	}
 
 
 	//fprintf(cgiOut, "name = %s, age = %s, stuId = %s\n", name, age, stuId);
@@ -87,10 +66,7 @@ fprintf(cgiOut, "Content-type:text/html;charset=utf-8\n\n");
 
 
 
-	/*strcpy(sql, "CREATE TABLE information
-	/*(Ino CHAR(20) PRIMARY KEY,Iname CHAR(20) NOT NULL,Isex CHAR(8) CHECK (sex in ('男' ,'女')), Iage SMALLINT NOT NULL,
-   Iphone INT(11) UNIQUE NOT NULL,Sdept INT, FOREIGN KEY (Sdept) REFERENCES school(Sdept)
- )");*
+	strcpy(sql, "CREATE TABLE course(Cno CHAR(4) PRIMARY KEY,Cname CHAR(20)UNIQUE NOT NULL,Ccredit SMALLINT  check(Ccredit>=0  and Ccredit<=10))character set=utf8");
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		if (ret != 1)
@@ -99,11 +75,11 @@ fprintf(cgiOut, "Content-type:text/html;charset=utf-8\n\n");
 			mysql_close(db);
 			return -1;
 		}
-	}*/
+	}
 
 
 
-	sprintf(sql, "insert into information values('%s', '%s', '%s', %d, %d ,%d)", Ino,  Iname, Isex ,atoi(Iage), atoi(Iphone) ,atoi(Sdept));
+	sprintf(sql, "insert into course values('%s', '%s', %d)", Cno,  Cname, atoi(Ccredit));
 	if (mysql_real_query(db, sql, strlen(sql) + 1) != 0)
 	{
 		fprintf(cgiOut, "%s\n", mysql_error(db));

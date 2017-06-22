@@ -62,7 +62,7 @@ int cgiMain()
 	}
 
 
-	sprintf(sql, "insert  into score values('%s','%s', %d) ",Ino, Cno,  atoi(grade));
+	sprintf(sql, "update score set grade=%d where Ino='%s' and Cno='%s'", atoi(grade) ,Ino,Cno);
 	if ((ret = mysql_real_query(db, sql, strlen(sql) + 1)) != 0)
 	{
 		fprintf(cgiOut,"mysql_real_query fail:%s\n", mysql_error(db));
